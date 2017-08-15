@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+DIR="/share"
+
+TIMESTAMP=`date +%y%m%d-%H%M%S`
+[[ ! -d "${DIR}/${TIMESTAMP}" ]] && mkdir "${DIR}/${TIMESTAMP}" 
+
+echo -e "Dump database in directory : ${DIR}/${TIMESTAMP}"
+mysqldump -hlocalhost -uroot --all-databases | bzip2 -c -9 > "${DIR}/${TIMESTAMP}/all-databases.bz2" 
+
+mysql="mysql -hlocalhost -uroot"
+
+if [[ -n $1 ]] 
+then
+   echo Restore all-databases from archive ${1}
+   bunzip2 -c "${DIR}/${1}/all-databases.bz2" | ${mysql}
+   exit 0;
+fi
+
+if [[ -z "$(find ${DIR} -maxdepth 1 -type f)" ]]
+then
+  echo "No files in ${DIR} directory"
+  exit 1;
+fi 
+
+for FILE in $(ls "${DIR}")
+do
+    FILE=${FILE##*/}
+    DATABASE=${FILE%.*}
+
+    if [[ -f "${DIR}/${FILE}" ]]
+    then    
+        echo -e "Restoring database : ${DATABASE}\tfrom file :${FILE}"
+
+        ${mysql} -e "CREATE DATABASE IF NOT EXISTS \`${DATABASE}\` ;"
+
+        {   case `file "${DIR}/${FILE}"` in
+                *gzip*)
+                    gunzip -c "${DIR}/${FILE}"
+                    ;;
+                *bzip2*)
+                    bunzip2 -c "${DIR}/${FILE}"
+                    ;;
+                *ASCII*)
+                    cat "${DIR}/${FILE}"
+                    ;;              
+            esac    
+        } | ${mysql} -D "${DATABASE}"
+     fi
+done

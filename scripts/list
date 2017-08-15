@@ -1,0 +1,30 @@
+#!/bin/bash
+set -e
+DIR="/share"
+
+echo "Databases directory : ${DIR}"
+
+for FILE in $(ls "${DIR}")
+do
+    FILE=${FILE##*/}
+    DATABASE=${FILE%.*}
+   
+    if [[ -f "${DIR}/${FILE}" ]]
+    then    
+        echo -ne "Database: ${DATABASE}\tfile ${FILE}\t"
+
+        case `file "${DIR}/${FILE}"` in
+                *gzip*)
+                    echo "gunzip file"
+                    ;;
+                *bzip2*)
+                    echo "bzip file"
+                    ;;
+                *ASCII*)
+                    echo "ASCII file"
+                    ;;              
+        esac    
+    else
+	    echo -e "Databases: all-databases\tarchive : ${DATABASE}"
+    fi
+done

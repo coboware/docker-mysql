@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+DIR="/share"
+
+TIMESTAMP=`date +%y%m%d-%H%M%S`
+
+echo "Dump all-databases archive: ${DIR}/${TIMESTAMP}"
+[[ ! -d "${DIR}/${TIMESTAMP}" ]] && mkdir "${DIR}/${TIMESTAMP}"
+
+mysqldump -hlocalhost -uroot --lock-tables=false --all-databases | bzip2 -c -9 > "${DIR}/${TIMESTAMP}/all-databases.bz2"
