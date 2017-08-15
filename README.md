@@ -20,4 +20,4 @@ Mountpoint **/share** enable dump and restore files and create archives for back
 MYSQL_EMPTY_PASSWORD yes
 
 
-[![coboware](https://avatars0.githubusercontent.com/u/30603725?v=4&s=80)](https://github.com/coboware/mysql)
+[![coboware](https://avatars0.githubusercontent.com/u/30603725?v=4&s=80)](https://github.com/coboware/docker-mysql)
