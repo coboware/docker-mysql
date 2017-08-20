@@ -1,5 +1,5 @@
 ### Description
-Added extra functionality on top off mysql image
+Added extra functionality on top off the mysql image
 * dump
 > docker exec [ container-id ] dump
 
@@ -14,7 +14,7 @@ Example usage:
   $ docker run -d -p 3306:3306 -v ~/share:/share  coboware/mysql
 ```
 ### Volumes
-Mountpoint **/share** enable dump and restore files and create archives for backup outside the container
+Mountpoint **/share** enable u to dump and restore files and create archives for backup outside the container
 
 ### Envirionment
 MYSQL_EMPTY_PASSWORD yes
