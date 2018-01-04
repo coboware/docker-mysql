@@ -11,7 +11,7 @@ Added extra functionality on top off the mysql image
 
 Example usage:
 ```
-  $ docker run -d -p 3306:3306 -v ~/share:/share  coboware/mysql
+  $ docker run -d -p 3306:3306 -v ~/share:/share  coboware/docker-mysql
 ```
 ### Volumes
 Mountpoint **/share** enable u to dump and restore files and create archives for backup outside the container
